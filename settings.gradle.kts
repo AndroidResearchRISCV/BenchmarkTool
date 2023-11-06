@@ -14,5 +14,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "BlueteamMicrobenchmark"
-//include(":app")
 include(":microbenchmarks")
