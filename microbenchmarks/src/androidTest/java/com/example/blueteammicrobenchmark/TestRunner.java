@@ -12,10 +12,9 @@ public class TestRunner {
 //        printClasspath();
 //        System.loadLibrary("benchmarkNative");
 
-        System.out.println("Loggable polyfill works: " + Log.isLoggable("asd", 1));
+//        System.out.println("Loggable polyfill works: " + Log.isLoggable("asd", 1));
 
         Result result = JUnitCore.runClasses(StringEqualBenchmark.class);
-        System.out.println("ran classes");
         for (Failure failure : result.getFailures()) {
             System.out.println(failure.toString());
         }

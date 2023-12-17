@@ -46,7 +46,6 @@ public class JUnitCore {
      * @return a {@link Result} describing the details of the test run and the failed tests.
      */
     public static Result runClasses(Class<?>... classes) {
-        System.out.println("Yay! Running patched code!");
         return runClasses(defaultComputer(), classes);
     }
 
@@ -104,7 +103,6 @@ public class JUnitCore {
      */
     public Result run(Computer computer, Class<?>... classes) {
         var r = Request.classes(computer, classes);
-        System.out.println("Running run(r)");
         return run(r);
     }
 
@@ -132,7 +130,6 @@ public class JUnitCore {
      * Do not use. Testing purposes only.
      */
     public Result run(Runner runner) {
-        System.out.println("Starting some fucking listener " + runner);
         Result result = new Result();
         RunListener listener = result.createListener();
         notifier.addFirstListener(listener);
@@ -144,7 +141,6 @@ public class JUnitCore {
         } finally {
             removeListener(listener);
         }
-        System.out.println("Finishing listener");
         return result;
     }
 

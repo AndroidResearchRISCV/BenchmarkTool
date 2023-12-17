@@ -72,15 +72,11 @@ public abstract class Request {
      * @return a <code>Request</code> that will cause all tests in the classes to be run
      */
     public static Request classes(Computer computer, Class<?>... classes) {
-        System.out.println("classes(Computer, ...classes)");
         try {
             AllDefaultPossibilitiesBuilder builder = new AllDefaultPossibilitiesBuilder();
             Runner suite = computer.getSuite(builder, classes);
-            System.out.println("Calling runner(suite)");
             return runner(suite);
         } catch (InitializationError e) {
-            System.out.println("Initialization fuck-up");
-            System.out.println(e.toString());
             return runner(new ErrorReportingRunner(e, classes));
         }
     }

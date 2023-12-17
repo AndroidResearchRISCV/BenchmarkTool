@@ -19,6 +19,8 @@ package androidx.test.ext.junit.runners;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Objects;
+
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.manipulation.Filter;
@@ -53,7 +55,6 @@ public final class AndroidJUnit4 extends Runner implements Filterable, Sortable 
   private final Runner delegate;
 
   public AndroidJUnit4(Class<?> klass) throws InitializationError {
-    System.out.println("Running AndroidJUnit4 for " + klass);
     delegate = loadRunner(klass);
   }
 
@@ -86,7 +87,12 @@ public final class AndroidJUnit4 extends Runner implements Filterable, Sortable 
   @SuppressWarnings("unchecked")
   private static Runner loadRunner(Class<?> testClass, String runnerClassName)
       throws InitializationError {
-    System.out.println("runnerClassName: " + runnerClassName);
+    if (Objects.equals(runnerClassName, "androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner")) {
+      runnerClassName = "androidx.test.internal.runner.junit4.MyAndroidJUnit4ClassRunner";
+    } else {
+      throw new AssertionError("This runner is not supported");
+    }
+
     Class<? extends Runner> runnerClass = null;
     try {
       runnerClass = (Class<? extends Runner>) Class.forName(runnerClassName);
@@ -115,13 +121,12 @@ public final class AndroidJUnit4 extends Runner implements Filterable, Sortable 
       throwInitializationError(
           String.format("Illegal constructor access for test runner %s\n", runnerClassName), e);
     } catch (InstantiationException e) {
-      System.out.println("ERROR 1");
       throwInitializationError(
           String.format("Failed to instantiate test runner %s\n", runnerClassName), e);
     } catch (InvocationTargetException e) {
-      System.out.println("ERROR 2");
       System.out.println(e.getCause().toString());
       e.getCause().printStackTrace(System.out);
+
       String details = getInitializationErrorDetails(e, testClass);
       throwInitializationError(
           String.format("Failed to instantiate test runner %s\n%s\n", runnerClass, details), e);
